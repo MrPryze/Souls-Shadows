@@ -1,0 +1,60 @@
+:root{
+  --bg:#0b0b12; --panel:#12121c; --text:#e6e6f0; --muted:#9292a3; --accent:#9b5cff; --border:#24243a;
+}
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{ margin:0; background:var(--bg); color:var(--text); font:16px/1.4 system-ui,Segoe UI,Roboto,Arial; }
+
+.top{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border); }
+.top h1{ margin:0; font-size:20px; }
+.top h1 span{ color:var(--accent); }
+.top .controls button{ margin-left:8px; }
+
+.grid{ display:grid; gap:14px; padding:14px 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:12px; min-height:120px; }
+.card h2{ margin:6px 0 10px; font-size:16px; }
+.badge{ display:inline-block; padding:2px 8px; border:1px solid var(--border); border-radius:999px; margin-right:6px; font-size:12px; color:var(--muted); }
+.choices button, .row button{ margin:4px 6px 0 0; }
+button{ cursor:pointer; background:#1a1a28; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:6px 10px; }
+button.ghost{ background:transparent; }
+.muted{ color:var(--muted); }
+.log{ max-height:200px; overflow:auto; font-size:13px; white-space:pre-wrap; }
+
+.modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.5); }
+.modal.hidden{ display:none; }
+.modal__card{ width:min(700px,90vw); background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:14px; }
+.modal__footer{ display:flex; justify-content:flex-end; margin-top:8px; }
+.card--dialogue{ grid-column: 1 / -1; min-height: 360px; }
+
+/* Intro: black screen, only Dialogue card visible */
+body.intro { background:#000; }
+body.intro #panel-status,
+body.intro #panel-actions,
+body.intro .dev-zone,
+body.intro .dev-divider { display:none; }
+body.intro .card--dialogue{ grid-column:1 / -1; min-height: 320px; }
+
+/* Dev divider */
+.dev-divider{ border:0; border-top:1px dashed var(--border); margin:14px 0; opacity:.6; }
+
+/* Player log */
+.toast{
+  position:fixed;
+  left:50%; transform:translateX(-50%);
+  top:56px;                   /* 👈 was bottom; now under header */
+  background:rgba(10,10,18,.75);
+  border:1px solid var(--border); color:var(--muted);
+  padding:6px 12px; border-radius:999px; font-size:13px;
+  backdrop-filter: blur(4px); cursor:pointer; z-index:20;
+}
+.toast.hidden{ display:none; }
+
+
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:30; }
+.overlay.hidden{ display:none; }
+.overlay__card{
+  width:min(720px, 92vw); max-height:70vh; overflow:auto;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:16px; margin:8vh auto; padding:14px;
+}
+.overlay__list{ white-space:pre-wrap; font-size:14px; color:var(--text); }

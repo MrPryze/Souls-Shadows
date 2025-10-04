@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Overlord — Souls & Shadows (Reboot)</title>
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>Overlord — <span>Souls & Shadows</span></h1>
+    <div class="controls">
+      <button id="btn-save">Save</button>
+      <button id="btn-reset">Reset</button>
+    </div>
+  </header>
+
+<main class="grid" id="game-ui">
+  <section id="panel-dialogue" class="card card--dialogue"></section>
+  <section id="panel-status"   class="card"></section>
+  <section id="panel-actions"  class="card"></section>
+</main>
+
+<hr class="dev-divider" />
+
+<!-- Developer area (below the “screen edge”) -->
+<main class="grid dev-zone">
+  <section class="card" id="panel-dev-log"></section>
+</main>
+
+<!-- Player log (toast + overlay) -->
+<div id="player-log-toast" class="toast hidden"></div>
+
+<div id="player-log-overlay" class="overlay hidden">
+  <div class="overlay__card">
+    <h3>Chronicle</h3>
+    <div id="player-log-list" class="overlay__list"></div>
+  </div>
+</div>
+
+<!-- inkjs + modules (unchanged) -->
+<script src="https://unpkg.com/inkjs@2.3.2/dist/ink.js"></script>
+<script type="module" src="/src/core/state.js"></script>
+<script type="module" src="/src/ui/ui.js"></script>
+<script type="module" src="/src/systems/day.js"></script>
+<script type="module" src="/src/systems/actions.js"></script>
+<script type="module" src="/src/story/inkRunner.js"></script>
+
+</body>
+</html>
