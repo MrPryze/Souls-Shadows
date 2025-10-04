@@ -41,7 +41,7 @@ body.intro .card--dialogue{ grid-column:1 / -1; min-height: 320px; }
 .toast{
   position:fixed;
   left:50%; transform:translateX(-50%);
-  top:56px;                   /* 👈 was bottom; now under header */
+  top:25px;                   /* 👈 was bottom; now under header */
   background:rgba(10,10,18,.75);
   border:1px solid var(--border); color:var(--muted);
   padding:6px 12px; border-radius:999px; font-size:13px;
@@ -58,3 +58,9 @@ body.intro .card--dialogue{ grid-column:1 / -1; min-height: 320px; }
   border-radius:16px; margin:8vh auto; padding:14px;
 }
 .overlay__list{ white-space:pre-wrap; font-size:14px; color:var(--text); }
+
+.card--main{ grid-column:1 / -1; }
+.main__dialogue{ min-height:200px; white-space:pre-wrap; margin-bottom:8px; }
+.main__ticker{ padding:6px 10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; }
+.main__status{ margin-bottom:8px; }
+.main__actions button{ min-width:120px; }

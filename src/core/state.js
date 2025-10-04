@@ -4,10 +4,20 @@ export const state = {
   area:'cave', room:'cell',
   flags:{ introDone:false, cageBroken:false, ratDone:false },
   inv:{},
-  log:[],
-  pLog:[],
-  lock: null           // 👈 'dialogue', 'battle', etc. or null
+  log:[],      // dev
+  pLog:[],     // player chronicle
+  now: '…',    // 👈 latest “what just happened”
+  lock: null
 };
+
+export function addPlayerLog(msg){
+  state.pLog.unshift(msg);
+  if (state.pLog.length>200) state.pLog.length=200;
+  state.now = msg;                 // 👈 update the main-screen ticker
+  addLog(msg);                     // mirror into dev log
+  emit();
+}
+
 
 export function lockUI(reason){ state.lock = reason || 'busy'; emit(); }
 export function unlockUI(){ state.lock = null; emit(); }
@@ -25,12 +35,6 @@ export function addLog(msg){
   state.log.unshift(msg);
   if (state.log.length>200) state.log.length=200;
   emit();
-}
-export function addPlayerLog(msg){
-  state.pLog.unshift(msg);
-  if (state.pLog.length>200) state.pLog.length=200;
-  // also mirror the last line to dev log for convenience
-  addLog(msg);
 }
 export function spendEnergy(n){ state.energy = Math.max(0, state.energy - n); emit(); }
 export function addSoul(n){

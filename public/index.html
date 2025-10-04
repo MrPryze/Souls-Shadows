@@ -1,50 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /> <!-- fixes â€¦ glyphs -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlord — Souls & Shadows (Reboot)</title>
+  <title>Souls & Shadows</title>
   <link rel="stylesheet" href="/public/styles.css" />
 </head>
 <body>
-  <header class="top">
-    <h1>Overlord — <span>Souls & Shadows</span></h1>
-    <div class="controls">
-      <button id="btn-save">Save</button>
-      <button id="btn-reset">Reset</button>
+
+  <main class="grid" id="game-ui">
+    <section id="panel-main" class="card card--main">
+      <!-- Dialogue / Scene -->
+      <div id="main-dialogue" class="main__dialogue"></div>
+
+      <!-- Latest meaningful line -->
+      <div id="main-ticker" class="main__ticker muted">…</div>
+
+      <!-- HUD badges -->
+      <div id="main-status" class="main__status row"></div>
+
+      <!-- Inline Actions -->
+      <div id="main-actions" class="main__actions choices"></div>
+    </section>
+  </main>
+
+  <hr class="dev-divider" />
+
+  <!-- Developer zone (diagnostics below the “screen edge”) -->
+  <main class="grid dev-zone">
+    <section class="card" id="panel-dev-log"></section>
+  </main>
+
+  <!-- Player Chronicle (toast + overlay) -->
+  <div id="player-log-toast" class="toast hidden"></div>
+  <div id="player-log-overlay" class="overlay hidden">
+    <div class="overlay__card">
+      <h3>Chronicle</h3>
+      <div id="player-log-list" class="overlay__list"></div>
     </div>
-  </header>
-
-<main class="grid" id="game-ui">
-  <section id="panel-dialogue" class="card card--dialogue"></section>
-  <section id="panel-status"   class="card"></section>
-  <section id="panel-actions"  class="card"></section>
-</main>
-
-<hr class="dev-divider" />
-
-<!-- Developer area (below the “screen edge”) -->
-<main class="grid dev-zone">
-  <section class="card" id="panel-dev-log"></section>
-</main>
-
-<!-- Player log (toast + overlay) -->
-<div id="player-log-toast" class="toast hidden"></div>
-
-<div id="player-log-overlay" class="overlay hidden">
-  <div class="overlay__card">
-    <h3>Chronicle</h3>
-    <div id="player-log-list" class="overlay__list"></div>
   </div>
-</div>
 
-<!-- inkjs + modules (unchanged) -->
-<script src="https://unpkg.com/inkjs@2.3.2/dist/ink.js"></script>
-<script type="module" src="/src/core/state.js"></script>
-<script type="module" src="/src/ui/ui.js"></script>
-<script type="module" src="/src/systems/day.js"></script>
-<script type="module" src="/src/systems/actions.js"></script>
-<script type="module" src="/src/story/inkRunner.js"></script>
+  <!-- Load inkjs (pick ONE of these). Prefer local if you saved it. -->
+  <!-- Local UMD: put node_modules/inkjs/dist/ink.js at /public/vendor/ink.js -->
+  <script src="/public/vendor/ink.js"></script>
+  <!-- Or CDN fallback (comment the line above and uncomment this):
+  <script src="https://unpkg.com/inkjs@2.3.2/dist/ink.js"></script>
+  -->
 
+  <!-- Your modules (must come AFTER inkjs) -->
+  <script type="module" src="/src/core/state.js"></script>
+  <script type="module" src="/src/ui/ui.js"></script>
+  <script type="module" src="/src/systems/day.js"></script>
+  <script type="module" src="/src/systems/actions.js"></script>
+  <script type="module" src="/src/story/inkRunner.js"></script>
 </body>
 </html>
