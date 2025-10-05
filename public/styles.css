@@ -64,3 +64,71 @@ body.intro .card--dialogue{ grid-column:1 / -1; min-height: 320px; }
 .main__ticker{ padding:6px 10px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; }
 .main__status{ margin-bottom:8px; }
 .main__actions button{ min-width:120px; }
+
+.card--main{ grid-column:1 / -1; }
+.main__dialogue{ min-height:220px; white-space:pre-wrap; margin-bottom:10px; }
+.main__logbar{
+  background:rgba(10,10,18,.8);
+  border:1px solid var(--border);
+  padding:8px 12px; border-radius:12px;
+  cursor:pointer; margin-bottom:10px;
+}
+.main__status{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.main__actions button{ min-width:120px; }
+
+/* Drawer (right slide-out) */
+.fab{
+  position:fixed; right:16px; top: 50%; z-index:25;
+  width:44px; height:44px; border-radius:50%;
+  background:#1a1a28; border:1px solid var(--border); color:var(--text);
+}
+.drawer{
+  margin-top:9%;
+  position:fixed; top:0; right:-360px; width:340px; height:50%;
+  background:var(--panel); border-left:1px solid var(--border);
+  transition:right .22s ease; z-index:24;
+  box-shadow:-8px 0 24px rgba(0,0,0,.35);
+}
+.drawer.open{ right:0; }
+.drawer__panel{ padding:12px; height:100%; display:flex; flex-direction:column; }
+.drawer__tabs{ display:flex; gap:6px; margin-bottom:8px; }
+.tab{ padding:6px 10px; border-radius:10px; border:1px solid var(--border); background:#151522; }
+.tab.active{ outline:2px solid var(--accent); }
+.drawer__section{ flex:1; overflow:auto; border:1px solid var(--border); border-radius:10px; padding:10px; }
+.hidden{ display:none; }
+.devjson{ font-size:12px; line-height:1.35; white-space:pre-wrap; }
+
+/* Overlay stays as you had, but we’ll reverse-render so newest is at the bottom */
+.overlay__list{ font-size:14px; }
+
+/* Top “notch” status bar */
+.statusbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px;
+  background:rgba(10,10,18,.9);
+  border-bottom:1px solid var(--border);
+  backdrop-filter: blur(6px);
+}
+.statusbar .chip{
+  font-size:12px; padding:2px 8px; border:1px solid var(--border);
+  border-radius:999px; color:var(--muted);
+}
+
+/* Main card spacing still applies */
+.card--main{ grid-column:1 / -1; }
+
+/* Hide helper */
+.hidden{ display:none; }
+
+/* Game Over modal */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 100;
+  display: grid; place-items: start center; padding-top: 18vh;
+}
+.modal-card {
+  background: var(--panel); border:1px solid var(--border);
+  border-radius: 14px; padding: 16px; width: min(560px, 92vw);
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+}
+.modal-card h3 { margin: 0; }

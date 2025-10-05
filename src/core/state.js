@@ -2,22 +2,31 @@ export const state = {
   day:1, energy:10, energyMax:10,
   soul:0, soulCap:15, hunger:0, health:10,
   area:'cave', room:'cell',
-  flags:{ introDone:false, cageBroken:false, ratDone:false },
+  flags:{ introDone:false, firstActionDone:false, cageBroken:false, ratDone:false },
   inv:{},
   log:[],      // dev
   pLog:[],     // player chronicle
   now: '…',    // 👈 latest “what just happened”
+  lock: null,
+  pLog: [],
+  now: '…',      // what the main log bar shows when not in dialogue
+  
   lock: null
 };
-
+export function setNow(msg){ state.now = msg; emit(); }
 export function addPlayerLog(msg){
   state.pLog.unshift(msg);
-  if (state.pLog.length>200) state.pLog.length=200;
-  state.now = msg;                 // 👈 update the main-screen ticker
-  addLog(msg);                     // mirror into dev log
+  if (state.pLog.length > 200) state.pLog.length = 200;
+  state.now = msg;     // ticker follows the last meaningful non-dialogue event
+  addLog(msg);
   emit();
 }
-
+export function markFirstAction(){
+  if (!state.flags.firstActionDone){
+    state.flags.firstActionDone = true;
+    emit();
+  }
+}
 
 export function lockUI(reason){ state.lock = reason || 'busy'; emit(); }
 export function unlockUI(){ state.lock = null; emit(); }
