@@ -29,8 +29,12 @@ export async function showDialogue(jsonPath, opts={}){
   }
 }
 
+
 export function runExternalStory(st, opts = {}) {
   story = st;
+  story.variablesState.$('area', state.area);
+  story.variablesState.$('node', state.room);
+  story.variablesState.$('hunger', state.hunger);
   hooks = { onChoice: opts.onChoice || null, onEnd: opts.onEnd || null };
   lastBlock = '';
   lockUI('dialogue');

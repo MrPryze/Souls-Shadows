@@ -1,3 +1,4 @@
+import { save } from '../core/save';
 export const state = {
   day:1, energy:10, energyMax:10,
   soul:0, soulCap:15, hunger:0, health:10,
@@ -37,7 +38,7 @@ export function get(k){ return state[k]; }
 export function set(k,v){ state[k]=v; emit(); }
 export function patch(obj){ Object.assign(state, obj); emit(); }
 export function onChange(fn){ subs.add(fn); return ()=>subs.delete(fn); }
-function emit(){ subs.forEach(fn=>fn(state)); }
+function emit(){ subs.forEach(fn=>fn(state)); save(state);}
 
 // helpers
 export function addLog(msg){

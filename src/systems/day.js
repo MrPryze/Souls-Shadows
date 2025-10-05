@@ -1,8 +1,10 @@
 import { state, patch, addLog } from '../core/state.js';
+import { tickEffects } from '../core/save.js';
 
 export function endDay(){
   const hungerNext = Math.min(100, state.hunger + (state.day >= 3 ? 1 : 0));
   const healthNext = hungerNext >= 5 ? Math.max(0, state.health - 1) : state.health;
+  tickEffects();
   patch({
     day: state.day + 1,
     hunger: hungerNext,

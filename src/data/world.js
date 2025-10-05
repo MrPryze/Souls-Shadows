@@ -1,3 +1,4 @@
+import { rand, chance } from '../core/rng';
 export function isCaveEntrance(state){
   return state.area==='cave' && state.room==='entrance';
 }
@@ -32,7 +33,7 @@ export function rollEncounter(state){
   for (const e of area.encounters){
     const inPlace = e.where === 'any' || e.where.includes(state.room);
     const ok = !e.gate || e.gate(state);
-    if (inPlace && ok && Math.random() < e.chance) return e.id;
+    if (inPlace && ok && rand()/chance() < e.chance) return e.id;
   }
   return null;
 }
