@@ -1,4 +1,4 @@
-import { save } from '../core/save';
+import { save } from '../core/save.js';
 export const state = {
   day:1, energy:10, energyMax:10,
   soul:0, soulCap:15, hunger:0, health:10,
