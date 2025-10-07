@@ -1,5 +1,9 @@
 import { state, onChange } from '../core/state.js';
 import { showDialogue } from '../story/inkRunner.js';
+// add these imports at top
+import { COST } from '../core/constants.js';
+import { inDialogue, inGameOver, canAct, canExplore, atCaveEntrance, atPool } from '../core/selectors.js';
+
 
 const $devLog  = document.querySelector('#panel-dev-log');
 const $overlay = document.getElementById('player-log-overlay');
@@ -41,33 +45,23 @@ function renderMain(){
   statusbar.classList.toggle('hidden', !showStatusbar);
 
   // Actions: hide entirely during dialogue
-  const locked = state.lock === 'dialogue';
   actions.classList.toggle('hidden', locked);
   actions.innerHTML = locked ? '' : '/* buttons markup */';
+  const locked = inDialogue() || inGameOver();
+  $actions.classList.toggle('hidden', locked);
 
   if (!locked){
-    const canAct = state.energy > 0 && state.flags.introDone;
-    const canExplore = state.flags.cageBroken && state.energy >= 3;
-    const atPool = state.area==='cave' && state.room==='pool';
-    const special = atPool ? `<button id="act-drink-pool">Drink from pool</button>` : '';
-    const atCaveEntrance = state.area==='cave' && state.room==='entrance';
-
-    actions.innerHTML = `
-      <button id="act-channel" ${!(state.energy>0 && state.flags.introDone) ? 'hidden' : ''}>Channel Soul</button>
-      <button id="act-explore" ${!(state.flags.cageBroken && state.energy>=3) ? 'hidden' : ''}>Explore</button>
-      ${atCaveEntrance ? `<button id="act-exit">Exit Cave</button>` : ``}
-      ${atPool ? `<button id="act-drink-pool">Drink from pool</button>` : ``}
-      <button id="act-sleep">Sleep</button>
+    $actions.innerHTML = `
+      <button class="btn btn--accent" id="act-channel" ${!canAct() ? 'disabled' : ''}>Channel Soul (-${COST.CHANNEL})</button>
+      <button class="btn" id="act-explore" ${!canExplore() ? 'disabled' : ''}>Explore (-${COST.EXPLORE})</button>
+      ${atCaveEntrance() ? `<button class="btn" id="act-exit">Exit Cave</button>` : ``}
+      ${atPool() ? `<button class="btn btn--danger" id="act-drink-pool">Drink from pool</button>` : ``}
+      <button class="btn" id="act-sleep">Sleep</button>
     `;
-
-    document.getElementById('act-channel')?.addEventListener('click', ()=> dispatch('channel'));
-    document.getElementById('act-explore')?.addEventListener('click', ()=> dispatch('explore'));
-    document.getElementById('act-exit')   ?.addEventListener('click', ()=> dispatch('exit_cave'));
-    document.getElementById('act-sleep')  ?.addEventListener('click', ()=> dispatch('sleep'));
-    document.getElementById('act-drink-pool')?.addEventListener('click', ()=> dispatch('drink_pool'));
-
-  } else {
-    actions.innerHTML = ''; // keep DOM small while hidden
+    // bindings unchanged…
+  }
+  else {
+      actions.innerHTML = ''; // keep DOM small while hidden
   }
 }
 
