@@ -1,4 +1,4 @@
-import { rand, chance } from '../core/rng';
+import { rand, chance } from '../core/rng.js';
 export function isCaveEntrance(state){
   return state.area==='cave' && state.room==='entrance';
 }
