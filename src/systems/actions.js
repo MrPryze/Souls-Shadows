@@ -1,4 +1,4 @@
-import { state, patch, addLog, addPlayerLog, spendEnergy, addSoul, markFirstAction } from '../core/state.js';
+import { state, patch, addLog, addPlayerLog, spendEnergy, addSoul, markFirstAction, setFlag } from '../core/state.js';
 import { endDay } from './day.js';
 import { playSnippet, playDialog, makeKnot } from '../story/inkBook.js';
 import { knotForSnippet } from '../story/snippetRouter.js';
@@ -12,15 +12,17 @@ export function handle(type){
     case 'channel': {
       if (state.energy<=0){ addPlayerLog('Too tired.'); return; }
       spendEnergy(1);
-      // flavor
-      playSnippet(state.area, knotForSnippet('channel', state.room), {
-        onText: async (t)=>{
-          addPlayerLog(t);
-        }
-      });
+
+      // your snippet + flavor/summary as before...
+      // actions.js (inside 'channel')
+      if (!state.flags.cageBroken && state.soul >= 5){
+        setFlag('cageBroken', true);
+        addPlayerLog('Stone splits. The cage collapses.');
+      }
+      
       const gained = addSoul(1);
-      if (!state.flags.cageBroken && state.soul>=5){
-        patch({ flags:{...state.flags, cageBroken:true} });
+      if (!state.flags.cageBroken && state.soul >= 5){
+        setFlag('cageBroken', true);                    // ← use setter rather than patch
         addPlayerLog('Stone splits. The cage collapses.');
       }
       if (!gained) addPlayerLog('You strain, but nothing more comes.');
@@ -129,3 +131,9 @@ function gameOver(msg) {
   document.getElementById('btn-restart').onclick = () => location.reload();
 }
 
+// src/systems/actions.js (top-level helpers)
+function narrate(flavor, {summary}={}){
+  document.getElementById('main-dialogue').innerHTML = `<div>${flavor}</div>`;
+  setNow(flavor);
+  if (summary) addPlayerLog(summary);
+}

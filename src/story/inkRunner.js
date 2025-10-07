@@ -1,4 +1,4 @@
-import { setNow, addPlayerLog, lockUI, unlockUI, state } from '../core/state.js';
+import { setNow, addPlayerLog, lockUI, unlockUI, state, markSummarizedOnce } from '../core/state.js';
 
 const $dlg = document.getElementById('main-dialogue');
 let story = null, hooks = { onChoice:null, onEnd:null }, lastBlock = '';
@@ -93,17 +93,20 @@ function continueStory() {
   // finished: only wrap up if not gameover
   if (!choices.length) {
     if (state.lock !== 'gameover') {
-      if (lastBlock) addPlayerLog(lastBlock);
+      // look for a sum: tag on the last line
+      const sumTag = (story?.currentTags || []).find(t=>t.startsWith('sum:'));
+      const nice = sumTag ? sumTag.slice(4) : lastBlock;
+      if (nice) addPlayerLog(nice);
       unlockUI();
-      hooks.onEnd && setTimeout(hooks.onEnd, 0);
-      if (!$dlg.textContent.trim()) {
+      hooks.onEnd && setTimeout(hooks.onEnd,0);
+      if (!$dlg.textContent.trim()){
         $dlg.innerHTML = `<div class="muted">The dark waits for your next move.</div>`;
       }
     } else {
-      // lock is gameover — keep modal on top; do not unlock/hide.
-      story = null;
+      story = null; // keep gameover modal on top; don't unlock.
     }
   }
+
 }
 
 

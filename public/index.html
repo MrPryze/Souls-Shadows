@@ -5,68 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Souls & Shadows</title>
   <link rel="stylesheet" href="/public/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
 </head>
 <body>
-<header id="statusbar" class="statusbar"></header>
-<main class="grid" id="game-ui">
-  <section id="panel-main" class="card card--main">
-    <!-- Dialogue -->
-    <div id="main-dialogue" class="main__dialogue"></div>
+  <button id="log-chip" class="chip chip--floating" title="Chronicle">☰ Log</button>
 
-    <!-- Log bar: shows latest line; click to open full Chronicle -->
-    <div id="main-logbar" class="main__logbar" title="Open Chronicle">…</div>
+  <header id="statusbar" class="statusbar"></header>
+  <main class="grid" id="game-ui">
+    <section id="panel-main" class="card card--main">
+      <!-- Dialogue -->
+      <div id="main-dialogue" class="main__dialogue"></div>
 
-    <!-- Inline HUD: we’ll move badges into the drawer; keep minimal here or leave empty -->
-    <div id="main-status" class="main__status row"></div>
+      <!-- Log bar: shows latest line; click to open full Chronicle -->
+      <div id="main-logbar" class="main__logbar" title="Open Chronicle">…</div>
 
-    <!-- Inline Actions -->
-    <div id="main-actions" class="main__actions choices"></div>
-  </section>
-</main>
+      <!-- Inline HUD: we’ll move badges into the drawer; keep minimal here or leave empty -->
+      <div id="main-status" class="main__status row"></div>
 
-<!-- Slide-out Stats Drawer -->
-<button id="btn-stats" class="fab" aria-label="Open Stats">←</button>
-<div id="stats-drawer" class="drawer">
-  <div class="drawer__panel">
-    <div class="drawer__tabs">
-      <button id="tab-player" class="tab active">Stats</button>
-      <button id="tab-dev" class="tab">Dev</button>
-    </div>
-    <div id="drawer-player" class="drawer__section"></div>
-    <div id="drawer-dev" class="drawer__section hidden">
-      <pre id="drawer-dev-json" class="devjson"></pre>
+      <!-- Inline Actions -->
+      <div id="main-actions" class="main__actions choices"></div>
+    </section>
+  </main>
+
+  <!-- Slide-out Stats Drawer -->
+  <button id="btn-stats" class="fab" aria-label="Open Stats">←</button>
+  <div id="stats-drawer" class="drawer">
+    <div class="drawer__panel">
+      <div class="drawer__tabs">
+        <button id="tab-player" class="tab active">Stats</button>
+        <button id="tab-dev" class="tab">Dev</button>
+      </div>
+      <div id="drawer-player" class="drawer__section"></div>
+      <div id="drawer-dev" class="drawer__section hidden">
+        <pre id="drawer-dev-json" class="devjson"></pre>
+      </div>
     </div>
   </div>
-</div>
+  
+  <button id="log-chip" class="chip chip--floating" title="Chronicle">☰ Log</button>
 
-<hr class="dev-divider" />
+  <hr class="dev-divider" />
 
-<!-- Developer zone (diagnostics below the “screen edge”) -->
-<main class="grid dev-zone">
-  <section class="card" id="panel-dev-log"></section>
-</main>
+  <!-- Developer zone (diagnostics below the “screen edge”) -->
+  <main class="grid dev-zone">
+    <section class="card" id="panel-dev-log"></section>
+  </main>
 
-<!-- Chronicle overlay (full log) -->
-<div id="player-log-overlay" class="overlay hidden">
-  <div class="overlay__card">
-    <h3>Chronicle</h3>
-    <div id="player-log-list" class="overlay__list"></div>
+  <!-- Chronicle overlay (full log) -->
+  <div id="player-log-overlay" class="overlay hidden">
+    <div class="overlay__card">
+      <h3>Chronicle</h3>
+      <div id="player-log-list" class="overlay__list"></div>
+    </div>
   </div>
-</div>
 
 
-  <!-- Load inkjs (pick ONE of these). Prefer local if you saved it. -->
-  <!-- Local UMD: put node_modules/inkjs/dist/ink.js at /public/vendor/ink.js -->
-  <script src="/public/vendor/ink.js"></script>
-  <!-- Or CDN fallback (comment the line above and uncomment this):
-  <script src="https://unpkg.com/inkjs@2.3.2/dist/ink.js"></script>
-  -->
+    <!-- Load inkjs (pick ONE of these). Prefer local if you saved it. -->
+    <!-- Local UMD: put node_modules/inkjs/dist/ink.js at /public/vendor/ink.js -->
+    <script src="/public/vendor/ink.js"></script>
+    <!-- Or CDN fallback (comment the line above and uncomment this):
+    <script src="https://unpkg.com/inkjs@2.3.2/dist/ink.js"></script>
+    -->
 
-  <!-- Your modules (must come AFTER inkjs) -->
-  <script type="module" src="/src/core/state.js"></script>
-  <script type="module" src="/src/ui/ui.js"></script>
-  <script type="module" src="/src/systems/day.js"></script>
-  <script type="module" src="/src/systems/actions.js"></script>
-  <script type="module" src="/src/story/inkRunner.js"></script>
+    <!-- Your modules (must come AFTER inkjs) -->
+    <script type="module" src="/src/core/state.js"></script>
+    <script type="module" src="/src/ui/ui.js"></script>
+    <script type="module" src="/src/systems/day.js"></script>
+    <script type="module" src="/src/systems/actions.js"></script>
+    <script type="module" src="/src/story/inkRunner.js"></script>
 </body>
 </html>

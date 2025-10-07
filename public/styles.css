@@ -132,3 +132,7 @@ body.intro .card--dialogue{ grid-column:1 / -1; min-height: 320px; }
   box-shadow: 0 20px 60px rgba(0,0,0,.45);
 }
 .modal-card h3 { margin: 0; }
+
+.chip{ font-size:12px; padding:4px 10px; border:1px solid var(--border); border-radius:999px; background:var(--panel-2); color:var(--muted); }
+.chip--floating{ position:fixed; right:10px; top:10px; z-index:60; }
+
