@@ -1,15 +1,53 @@
-# run.py — serve project ROOT so /public and /src are both visible
-import http.server, socketserver, pathlib, os
+# run.py — robust local dev server for Souls & Shadows
+import http.server
+import socketserver
+import os
+import sys
+import webbrowser
+from pathlib import Path
 
 PORT = 8000
-ROOT = pathlib.Path(__file__).resolve().parent  # overlord/
-os.chdir(ROOT)  # make both /public and /src accessible
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    # Optional: show cleaner logs
-    def log_message(self, fmt, *args): 
-        print(self.address_string(), "-", self.log_date_time_string(), fmt % args)
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    # Serve from repo root; default file = /public/index.html
+    def do_GET(self):
+        # default to serving /public/ if requesting /
+        if self.path in ('', '/', '/index.html'):
+            self.path = '/public/index.html'
+        return http.server.SimpleHTTPRequestHandler.do_GET(self)
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at http://localhost:{PORT}/public/index.html")
-    httpd.serve_forever()
+    # nicer logging
+    def log_message(self, fmt, *args):
+        sys.stdout.write("%s - - %s\n" % (self.client_address[0], fmt % args))
+
+def main():
+    # cd to repo root (this file's parent)
+    repo_root = Path(__file__).resolve().parent
+    os.chdir(repo_root)
+
+    # create server
+    with socketserver.TCPServer(("", PORT), QuietHandler) as httpd:
+        url = f"http://localhost:{PORT}/public/"
+        print(f"\nServing Souls & Shadows at {url}")
+        print("Press Ctrl+C to stop.\n")
+
+        # try to open the browser once
+        try:
+            webbrowser.open(url)
+        except Exception as e:
+            print(f"(Could not open browser automatically: {e})")
+
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\nShutting down…")
+        finally:
+            httpd.server_close()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print("Fatal error in run.py:", e)
+        print("Tip: run `python -m http.server 8000` from the repo root and open /public/")
+        input("Press Enter to close…")

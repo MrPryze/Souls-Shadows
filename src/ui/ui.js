@@ -16,8 +16,6 @@ const $tabDev   = document.getElementById('tab-dev');
 const $secPlayer= document.getElementById('drawer-player');
 const $secDev   = document.getElementById('drawer-dev');
 const $devJson  = document.getElementById('drawer-dev-json');
-const atCaveEntrance = state.area==='cave' && state.room==='entrance';
-const atPool = state.area==='cave' && state.room==='pool';
 
 // Intro: hide everything but dialogue; when intro finishes, onEnd flips the flag in inkRunner.js init.
 document.body.classList.add('intro');
@@ -31,37 +29,43 @@ showDialogue('/src/data/dialogues/intro.json', {
 
 // -------- renderers ----------
 function renderMain(){
-  const logbar = document.getElementById('main-logbar');
-  const actions = document.getElementById('main-actions');
-  const statusbar = document.getElementById('statusbar');
-  const showLogbar = state.flags.firstActionDone && state.lock !== 'dialogue';
-  const showStatusbar = state.flags.firstActionDone && state.lock !== 'dialogue';
+  if (!$logbar || !$actions) return;
 
-  logbar.classList.toggle('hidden', !showLogbar);
-  if (showLogbar){
-    logbar.textContent = state.now || '…';
-    logbar.onclick = ()=> openChronicle();
+  // --- compute lock state FIRST (prevents TDZ error)
+  const locked = state.lock === 'dialogue' || state.lock === 'gameover';
+  const inDialogue = state.lock === 'dialogue';
+
+  // --- log bar
+  $logbar.classList.toggle('hidden', inDialogue);
+  if (!inDialogue){
+    $logbar.textContent = state.now || '…';
+    $logbar.onclick = openChronicle;
   }
-  statusbar.classList.toggle('hidden', !showStatusbar);
 
-  // Actions: hide entirely during dialogue
-  actions.classList.toggle('hidden', locked);
-  actions.innerHTML = locked ? '' : '/* buttons markup */';
-  const locked = inDialogue() || inGameOver();
+  // --- actions
   $actions.classList.toggle('hidden', locked);
 
   if (!locked){
+    // selectors are fine; inline logic below if you haven't wired selectors yet
+    const canAct     = state.flags.introDone && state.energy > 0;
+    const canExplore = state.flags.cageBroken && state.energy >= 3;
+    const atEntrance = state.area==='cave' && state.room==='entrance';
+    const atPool     = state.area==='cave' && state.room==='pool';
+
     $actions.innerHTML = `
-      <button class="btn btn--accent" id="act-channel" ${!canAct() ? 'disabled' : ''}>Channel Soul (-${COST.CHANNEL})</button>
-      <button class="btn" id="act-explore" ${!canExplore() ? 'disabled' : ''}>Explore (-${COST.EXPLORE})</button>
-      ${atCaveEntrance() ? `<button class="btn" id="act-exit">Exit Cave</button>` : ``}
-      ${atPool() ? `<button class="btn btn--danger" id="act-drink-pool">Drink from pool</button>` : ``}
+      <button class="btn btn--accent" id="act-channel" ${!canAct ? 'disabled' : ''}>Channel Soul</button>
+      <button class="btn" id="act-explore" ${!canExplore ? 'disabled' : ''}>Explore (3)</button>
+      ${atEntrance ? `<button class="btn" id="act-exit">Exit Cave</button>` : ``}
+      ${atPool ? `<button class="btn btn--danger" id="act-drink-pool">Drink from pool</button>` : ``}
       <button class="btn" id="act-sleep">Sleep</button>
     `;
-    // bindings unchanged…
-  }
-  else {
-      actions.innerHTML = ''; // keep DOM small while hidden
+    document.getElementById('act-channel')?.addEventListener('click', ()=> dispatch('channel'));
+    document.getElementById('act-explore')?.addEventListener('click', ()=> dispatch('explore'));
+    document.getElementById('act-exit')   ?.addEventListener('click', ()=> dispatch('exit_cave'));
+    document.getElementById('act-drink-pool')?.addEventListener('click', ()=> dispatch('drink_pool'));
+    document.getElementById('act-sleep')  ?.addEventListener('click', ()=> dispatch('sleep'));
+  } else {
+    $actions.innerHTML = '';
   }
 }
 

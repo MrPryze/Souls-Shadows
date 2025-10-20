@@ -13,13 +13,37 @@
   --t-fast: .15s cubic-bezier(.2,.8,.2,1);
 }
 
-.badge{
-  font-size:12px; color: var(--muted);
-  padding:2px 8px; border:1px solid var(--border);
-  border-radius: var(--radius-pill);
+*{ box-sizing: border-box; }
+html, body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.row{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+main{ max-width: 920px; margin: 16px auto; padding: 0 12px; }
+
+h1,h2,h3,h4{ margin: 0 0 8px; }
+.muted{ color: var(--muted); }
+
+.card{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 12px;
+}
+
+.chip, .badge{
+  font-size:12px; color: var(--muted);
+  padding: 2px 8px; border:1px solid var(--border);
+  border-radius: var(--radius-pill);
+  display:inline-flex; align-items:center; gap:6px;
+}
+
+.row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.hidden{ display:none !important; }
 
 .btn {
   appearance:none; border:1px solid var(--border);
@@ -32,3 +56,18 @@
 .btn[disabled] { opacity:.6; pointer-events:none; }
 .btn--accent { border-color: rgba(138,161,255,.35); box-shadow: 0 0 0 2px rgba(138,161,255,.12) inset; }
 .btn--danger { border-color: rgba(255,92,124,.35); }
+
+#statusbar{ display:flex; gap:8px; flex-wrap:wrap; padding:8px 0; }
+
+#main-logbar{ margin: 8px 0 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel-2); }
+#main-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+#player-log-overlay{
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+}
+#player-log-overlay .sheet{
+  width: min(820px, 92vw); max-height: 80vh; overflow: auto;
+  background: var(--panel); border:1px solid var(--border); border-radius: var(--radius); padding: 16px;
+}
+#player-log-list{ white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }

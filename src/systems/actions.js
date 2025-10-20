@@ -1,8 +1,6 @@
-import { state, patch, addLog, addPlayerLog, spendEnergy, addSoul, markFirstAction,setNow, gainSoul, setFlag } from '../core/state.js';
+import { state, patch, addLog, addPlayerLog, spendEnergy,setNow, gainSoul, setFlag } from '../core/state.js';
 import { endDay } from './day.js';
 import { playSnippet, playDialog, makeKnot } from '../story/inkBook.js';
-import { knotForSnippet } from '../story/snippetRouter.js';
-import { rollEncounter, nextRoom, isCaveEntrance } from '../data/world.js';
 import { COST, SOUL, FLAGS } from '../core/constants.js';
 
 export function handle(type){
